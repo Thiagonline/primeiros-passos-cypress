@@ -12,7 +12,7 @@ describe('Orange HRM Tests', () => {
   }
 
   it.skip('login - Success', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+    cy.visit('/auth/login')
     cy.get(':nth-child(2) > .oxd-input-group > :nth-child(2) > .oxd-input').type('Admin')
     cy.get(':nth-child(3) > .oxd-input-group > :nth-child(2) > .oxd-input').type('admin123')
     cy.get('.oxd-button').click()
@@ -20,14 +20,14 @@ describe('Orange HRM Tests', () => {
     cy.get('.oxd-topbar-header-breadcrumb > .oxd-text').contains('Dashboard')
   })
   it.skip('login - Fail', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+    cy.visit('/auth/login')
     cy.get(':nth-child(2) > .oxd-input-group > :nth-child(2) > .oxd-input').type('Test')
     cy.get(':nth-child(3) > .oxd-input-group > :nth-child(2) > .oxd-input').type('Test')
     cy.get('.oxd-button').click()
     cy.get('.oxd-alert')
   })
   it('login - Success', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+    cy.visit('/auth/login')
     cy.get(selectorsList.usernameField).type(userData.userSuccess.username)
     cy.get(selectorsList.passwordField).type(userData.userSuccess.password)
     cy.get(selectorsList.loginButton).click()
@@ -35,7 +35,7 @@ describe('Orange HRM Tests', () => {
     cy.get(selectorsList.dashboardGrid)
   })
   it('login - Fail', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+    cy.visit('/auth/login')
     cy.get(selectorsList.usernameField).type(userData.userFail.username)
     cy.get(selectorsList.passwordField).type(userData.userFail.password)
     cy.get(selectorsList.loginButton).click()
