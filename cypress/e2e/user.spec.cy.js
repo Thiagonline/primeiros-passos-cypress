@@ -53,6 +53,7 @@ describe('Orange HRM Tests', () => {
     cy.get(selectorsList.dateField).eq(0).clear().type('2025-03-10')
     cy.get(selectorsList.dateCloseButton).eq(0).click()
     cy.get(selectorsList.dateField).eq(1).clear().type('1979-10-10')
+    cy.get(selectorsList.submitButton).eq(0).click()
     cy.get('body').should('contain', 'Successfully Updated')
     cy.get('.oxd-toast-close')
     
