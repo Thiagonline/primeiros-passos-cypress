@@ -8,10 +8,19 @@ describe('Orange HRM Tests', () => {
     loginButton: "[type='submit']",
     sectionTitleTopBar: ".oxd-topbar-header-breadcrumb-module",
     dashboardGrid: ".orangehrm-dashboard-grid",
-    wrongCredentialAlert: "[role='alert']"
+    wrongCredentialAlert: "[role='alert']",
+    myInfoButton: '[href="/web/index.php/pim/viewMyDetails"]',
+    firstNameField: "[name='firstName']",
+    middleNameField:"[name='middleName']",
+    lastNameField: "[name='lastName']",
+    genericField: ".oxd-input--active",
+    dateField: "[placeholder='yyyy-dd-mm']",
+    dateCloseButton: ".--close",
+    submitButton: "[type='submit']"   
   }
 
-  it.skip('login - Success', () => {
+  it.skip('User Info Update', () => {
+
     cy.visit('/auth/login')
     cy.get(':nth-child(2) > .oxd-input-group > :nth-child(2) > .oxd-input').type('Admin')
     cy.get(':nth-child(3) > .oxd-input-group > :nth-child(2) > .oxd-input').type('admin123')
@@ -20,21 +29,37 @@ describe('Orange HRM Tests', () => {
     cy.get('.oxd-topbar-header-breadcrumb > .oxd-text').contains('Dashboard')
   })
   it.skip('login - Fail', () => {
+
     cy.visit('/auth/login')
     cy.get(':nth-child(2) > .oxd-input-group > :nth-child(2) > .oxd-input').type('Test')
     cy.get(':nth-child(3) > .oxd-input-group > :nth-child(2) > .oxd-input').type('Test')
     cy.get('.oxd-button').click()
     cy.get('.oxd-alert')
   })
-  it('login - Success', () => {
+  it.only('User info Update - Success', () => {
+
     cy.visit('/auth/login')
     cy.get(selectorsList.usernameField).type(userData.userSuccess.username)
     cy.get(selectorsList.passwordField).type(userData.userSuccess.password)
     cy.get(selectorsList.loginButton).click()
     cy.location('pathname').should('equal', '/web/index.php/dashboard/index')
     cy.get(selectorsList.dashboardGrid)
+    cy.get(selectorsList.myInfoButton).click()
+    cy.get(selectorsList.firstNameField).clear().type('FirstNTest')
+    cy.get(selectorsList.middleNameField).clear().type('MidNamTest')
+    cy.get(selectorsList.lastNameField).clear().type('LastNaTest')
+    cy.get(selectorsList.genericField).eq(3).clear().type('EmployTest')
+    cy.get(selectorsList.genericField).eq(4).clear().type('OtheIdTest')
+    cy.get(selectorsList.dateField).eq(0).clear().type('2025-03-10')
+    cy.get(selectorsList.dateCloseButton).eq(0).click()
+    cy.get(selectorsList.dateField).eq(1).clear().type('1979-10-10')
+    cy.get('body').should('contain', 'Successfully Updated')
+    cy.get('.oxd-toast-close')
+    
+
   })
   it('login - Fail', () => {
+
     cy.visit('/auth/login')
     cy.get(selectorsList.usernameField).type(userData.userFail.username)
     cy.get(selectorsList.passwordField).type(userData.userFail.password)
