@@ -1,14 +1,17 @@
 import userData from '../fixtures/users/userData.json'
+import LoginPage from '../pages/loginPage.js'
+import DashboardPage from '../pages/dashboardPage'
+import MenuPage from '../pages/menuPage'
+
+const loginPage = new LoginPage()
+const dashboardPage = new DashboardPage()
+const menuPage = new MenuPage()
 
 describe('Orange HRM Tests', () => {
 
-  const selectorsList = {
-    usernameField: "[name='username']",
-    passwordField: "[name='password']",
-    loginButton: "[type='submit']",
+  const selectorsList = {    
     sectionTitleTopBar: ".oxd-topbar-header-breadcrumb-module",
-    dashboardGrid: ".orangehrm-dashboard-grid",
-    wrongCredentialAlert: "[role='alert']",
+    dashboardGrid: ".orangehrm-dashboard-grid",    
     myInfoButton: '[href="/web/index.php/pim/viewMyDetails"]',
     firstNameField: "[name='firstName']",
     middleNameField:"[name='middleName']",
@@ -16,7 +19,8 @@ describe('Orange HRM Tests', () => {
     genericField: ".oxd-input--active",
     dateField: "[placeholder='yyyy-dd-mm']",
     dateCloseButton: ".--close",
-    submitButton: "[type='submit']"   
+    submitButton: "[type='submit']",
+    submitButton1: ".oxd-select-text--arrow"
   }
 
   it.skip('User Info Update', () => {
@@ -37,14 +41,13 @@ describe('Orange HRM Tests', () => {
     cy.get('.oxd-alert')
   })
   it.only('User info Update - Success', () => {
+    loginPage.accessLoginPage()
+    loginPage.loginWithAnyUser(userData.userSuccess.username, userData.userSuccess.password)
 
-    cy.visit('/auth/login')
-    cy.get(selectorsList.usernameField).type(userData.userSuccess.username)
-    cy.get(selectorsList.passwordField).type(userData.userSuccess.password)
-    cy.get(selectorsList.loginButton).click()
-    cy.location('pathname').should('equal', '/web/index.php/dashboard/index')
-    cy.get(selectorsList.dashboardGrid)
-    cy.get(selectorsList.myInfoButton).click()
+    dashboardPage.checkDashboardPage()
+
+    menuPage.accessMyInfo()
+    
     cy.get(selectorsList.firstNameField).clear().type('FirstNTest')
     cy.get(selectorsList.middleNameField).clear().type('MidNamTest')
     cy.get(selectorsList.lastNameField).clear().type('LastNaTest')
@@ -52,14 +55,14 @@ describe('Orange HRM Tests', () => {
     cy.get(selectorsList.genericField).eq(4).clear().type('OtheIdTest')
     cy.get(selectorsList.dateField).eq(0).clear().type('2025-03-10')
     cy.get(selectorsList.dateCloseButton).eq(0).click()
-    cy.get(selectorsList.dateField).eq(1).clear().type('1979-10-10')
-    cy.get(selectorsList.submitButton).eq(0).click()
+    cy.get(selectorsList.dateField).eq(1).clear().type('1979-10-10')    
+    cy.get(selectorsList.submitButton1).eq(0).click()//nacionalidade
+    cy.contains('.oxd-select-dropdown > *, .oxd-select-option', 'Brazilian').click();
+    cy.get(selectorsList.submitButton).eq(0).click()//salvar
     cy.get('body').should('contain', 'Successfully Updated')
     cy.get('.oxd-toast-close')
-    
-
   })
-  it('login - Fail', () => {
+    it('login - Fail', () => {
 
     cy.visit('/auth/login')
     cy.get(selectorsList.usernameField).type(userData.userFail.username)
