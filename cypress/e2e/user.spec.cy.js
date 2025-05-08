@@ -2,25 +2,23 @@ import userData from '../fixtures/users/userData.json'
 import LoginPage from '../pages/loginPage.js'
 import DashboardPage from '../pages/dashboardPage'
 import MenuPage from '../pages/menuPage'
+import MyInfoPage from '../pages/myInfoPage'
 
+const Chance = require('chance')
+
+const chance = new Chance()
 const loginPage = new LoginPage()
 const dashboardPage = new DashboardPage()
 const menuPage = new MenuPage()
+const myInfoPage = new MyInfoPage()
 
 describe('Orange HRM Tests', () => {
 
   const selectorsList = {    
     sectionTitleTopBar: ".oxd-topbar-header-breadcrumb-module",
     dashboardGrid: ".orangehrm-dashboard-grid",    
-    myInfoButton: '[href="/web/index.php/pim/viewMyDetails"]',
-    firstNameField: "[name='firstName']",
-    middleNameField:"[name='middleName']",
-    lastNameField: "[name='lastName']",
-    genericField: ".oxd-input--active",
-    dateField: "[placeholder='yyyy-dd-mm']",
-    dateCloseButton: ".--close",
-    submitButton: "[type='submit']",
-    submitButton1: ".oxd-select-text--arrow"
+    myInfoButton: '[href="/web/index.php/pim/viewMyDetails"]',   
+    
   }
 
   it.skip('User Info Update', () => {
@@ -40,34 +38,20 @@ describe('Orange HRM Tests', () => {
     cy.get('.oxd-button').click()
     cy.get('.oxd-alert')
   })
-  it.only('User info Update - Success', () => {
+  it('login - Success', () => {
     loginPage.accessLoginPage()
     loginPage.loginWithAnyUser(userData.userSuccess.username, userData.userSuccess.password)
 
     dashboardPage.checkDashboardPage()
 
-    menuPage.accessMyInfo()
-    
-    cy.get(selectorsList.firstNameField).clear().type('FirstNTest')
-    cy.get(selectorsList.middleNameField).clear().type('MidNamTest')
-    cy.get(selectorsList.lastNameField).clear().type('LastNaTest')
-    cy.get(selectorsList.genericField).eq(3).clear().type('EmployTest')
-    cy.get(selectorsList.genericField).eq(4).clear().type('OtheIdTest')
-    cy.get(selectorsList.dateField).eq(0).clear().type('2025-03-10')
-    cy.get(selectorsList.dateCloseButton).eq(0).click()
-    cy.get(selectorsList.dateField).eq(1).clear().type('1979-10-10')    
-    cy.get(selectorsList.submitButton1).eq(0).click()//nacionalidade
-    cy.contains('.oxd-select-dropdown > *, .oxd-select-option', 'Brazilian').click();
-    cy.get(selectorsList.submitButton).eq(0).click()//salvar
-    cy.get('body').should('contain', 'Successfully Updated')
-    cy.get('.oxd-toast-close')
-  })
-    it('login - Fail', () => {
+    menuPage.accessMyInfo()    
 
-    cy.visit('/auth/login')
-    cy.get(selectorsList.usernameField).type(userData.userFail.username)
-    cy.get(selectorsList.passwordField).type(userData.userFail.password)
-    cy.get(selectorsList.loginButton).click()
-    cy.get(selectorsList.wrongCredentialAlert)
+    myInfoPage.fillPersonalDetails(chance.first(), chance.last(), chance.last())
+    myInfoPage.fillEmployeeDetails('EmployId', 'otherId', '2025-07-29', '1979-10-10')
+    myInfoPage.saveForm()  
+       
+    
+   
   })
+    
 })
