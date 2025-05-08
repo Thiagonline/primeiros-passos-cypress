@@ -8,13 +8,14 @@ npm install
 ...
 >**NOTE:**
 >
->it is necessary to have **Node.js** installed.
+>You must have **Node.js** installed.
 
 ## Running
 ```bash
-#You open the Cypress UI
+# Open Cypress UI
 npx cypress open
 
-#Run the automation by command line
+# Run Cypress tests via the command line
 npx cypress run
+
 ```
