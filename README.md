@@ -1,1 +1,2 @@
-# My Cypress Automation
+node_modules
+package-lock.json
