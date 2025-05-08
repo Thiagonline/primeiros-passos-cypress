@@ -5,7 +5,7 @@ This project utilizes Cypress to automate the testing of two key features: user 
 ## Installation
 ```bash
 npm install
-...
+```
 >**NOTE:**
 >
 >You must have **Node.js** installed.
